@@ -107,11 +107,3 @@ class RCon(host: String, port: Int) {
         return this.sendMessage(MessageType.COMMAND, body)
     }
 }
-
-
-fun main() {
-    val rcon = RCon("192.168.10.203", 25575)
-    rcon.authenticate("114514")
-    val response = rcon.sendCommand("list")
-    println(response)
-}
