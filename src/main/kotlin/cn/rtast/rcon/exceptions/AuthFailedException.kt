@@ -14,16 +14,7 @@
  *    limitations under the License.
  */
 
-package cn.rtast.rcon
 
-enum class MessageType(val value: Int) {
-    RESPONSE(0),
-    COMMAND(2),
-    AUTHENTICATE(3);
+package cn.rtast.rcon.exceptions
 
-    companion object {
-        private val VALUES = entries.toTypedArray()
-        fun fromInt(value: Int) = VALUES.first { it.value == value }
-    }
-}
-
+class AuthFailedException(message: String?): Exception(message)

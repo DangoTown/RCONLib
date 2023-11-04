@@ -14,11 +14,7 @@
  *    limitations under the License.
  */
 
-package cn.rtast.rcon
 
-class Message {
-    var length = 0
-    var id = 0
-    var type = MessageType.RESPONSE
-    var body = ""
-}
+package cn.rtast.rcon.exceptions
+
+class ConnectFailedException(message: String?): Exception(message)

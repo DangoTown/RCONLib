@@ -16,6 +16,10 @@
 
 package cn.rtast.rcon
 
+import cn.rtast.rcon.enums.Message
+import cn.rtast.rcon.enums.MessageType
+import cn.rtast.rcon.exceptions.AuthFailedException
+import cn.rtast.rcon.exceptions.ConnectFailedException
 import java.net.Socket
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -23,9 +27,17 @@ import java.util.concurrent.atomic.AtomicInteger
 
 
 class RCon(host: String, port: Int) {
-    private val conn = Socket(host, port)
+    private var conn: Socket
     private val lastId = AtomicInteger(0)
     private val headerSize: Int = 10
+
+    init {
+        try {
+            this.conn = Socket(host, port)
+        } catch (_: Exception) {
+            throw ConnectFailedException("Connect to $host:$port failed, please checkout the host and port.")
+        }
+    }
 
     private fun parseInt(b: ByteArray): Int {
         var result = 0
@@ -36,13 +48,11 @@ class RCon(host: String, port: Int) {
     }
 
     private fun decodeMessage(msg: ByteArray): Message {
-        val resp = Message()
-        resp.length = this.parseInt(msg.sliceArray(IntRange(0, 3)))
-        resp.id = this.parseInt(msg.sliceArray(IntRange(4, 7)))
-        resp.type = MessageType.fromInt(this.parseInt(msg.sliceArray(IntRange(8, 11))))
-        resp.body = String(msg.sliceArray(IntRange(12, resp.length + 1)))
-
-        return resp
+        val length = this.parseInt(msg.sliceArray(IntRange(0, 3)))
+        val id = this.parseInt(msg.sliceArray(IntRange(4, 7)))
+        val type = MessageType.fromInt(this.parseInt(msg.sliceArray(IntRange(8, 11))))
+        val body = msg.sliceArray(IntRange(12, length + 1)).decodeToString()
+        return Message(length, id, type, body)
     }
 
     private fun encodeMessage(msg: Message): ByteArray {
@@ -60,21 +70,10 @@ class RCon(host: String, port: Int) {
         return bytes
     }
 
-
-    fun authenticate(password: String) {
-        sendMessage(MessageType.AUTHENTICATE, password)
-    }
-
-    fun sendCommand(body: String): Message {
-        return sendMessage(MessageType.COMMAND, body)
-    }
-
-    fun sendMessage(messageType: MessageType, body: String): Message {
-        val message = Message()
-        message.length = body.length + headerSize
-        message.id = lastId.addAndGet(1)
-        message.type = messageType
-        message.body = body
+    private fun sendMessage(messageType: MessageType, body: String): Message {
+        val length = body.length + headerSize
+        val id = lastId.addAndGet(1)
+        val message = Message(length, id, messageType, body)
 
         val bytes: ByteArray = this.encodeMessage(message)
         conn.outputStream.write(bytes)
@@ -96,4 +95,23 @@ class RCon(host: String, port: Int) {
         respBuf.get(respBytes, 0, respBytes.size)
         return this.decodeMessage(respBytes)
     }
+
+    fun authenticate(password: String) {
+        val response = this.sendMessage(MessageType.AUTHENTICATE, password)
+        if (response.id == -1) {
+            throw AuthFailedException("Password is not correct!")
+        }
+    }
+
+    fun executeCommand(body: String): Message {
+        return this.sendMessage(MessageType.COMMAND, body)
+    }
+}
+
+
+fun main() {
+    val rcon = RCon("192.168.10.203", 25575)
+    rcon.authenticate("114514")
+    val response = rcon.sendCommand("list")
+    println(response)
 }
