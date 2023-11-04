@@ -26,14 +26,18 @@ import java.nio.ByteOrder
 import java.util.concurrent.atomic.AtomicInteger
 
 
-class RCon(host: String, port: Int) {
+class RCon(host: String, port: Int?) {
     private var conn: Socket
     private val lastId = AtomicInteger(0)
     private val headerSize: Int = 10
 
     init {
         try {
-            this.conn = Socket(host, port)
+            if (port == null) {
+                this.conn = Socket(host, 25575)
+            } else {
+                this.conn = Socket(host, port)
+            }
         } catch (_: Exception) {
             throw ConnectFailedException("Connect to $host:$port failed, please checkout the host and port.")
         }
