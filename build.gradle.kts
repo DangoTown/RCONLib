@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("org.jetbrains.kotlin.jvm") version "2.0.0"
 }
@@ -7,4 +9,13 @@ version = "1.0.0"
 
 repositories {
     mavenCentral()
+}
+
+tasks.compileKotlin {
+    compilerOptions.jvmTarget = JvmTarget.JVM_17
+}
+
+tasks.compileJava {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
 }
