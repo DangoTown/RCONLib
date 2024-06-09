@@ -14,3 +14,8 @@ repositories {
 tasks.compileKotlin {
     compilerOptions.jvmTarget = JvmTarget.JVM_17
 }
+
+tasks.compileJava {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+}
