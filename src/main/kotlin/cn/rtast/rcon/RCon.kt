@@ -110,4 +110,8 @@ class RCon(host: String, port: Int?) {
     fun executeCommand(body: String): Message {
         return this.sendMessage(MessageType.COMMAND, body)
     }
+
+    fun close() {
+        conn.close()
+    }
 }
