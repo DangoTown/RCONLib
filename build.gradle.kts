@@ -29,8 +29,8 @@ publishing {
             name = "GithubPackages"
             url = uri("https://maven.pkg.github.com/DangoTown/RCONLib")
             credentials {
-                username = "RTAkland"
-                password = System.getenv("GITHUB_TOKEN")
+                username = System.getenv("ACTOR")
+                password = System.getenv("TOKEN")
             }
         }
     }
