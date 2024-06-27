@@ -27,9 +27,9 @@ publishing {
     repositories {
         maven {
             name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/DangoTown/RCONLib")
+            url = uri("https://repo.rtast.cn/api/packages/RTAkland/maven")
             credentials {
-                username = System.getenv("ACTOR")
+                username = "RTAkland"
                 password = System.getenv("TOKEN")
             }
         }
