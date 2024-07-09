@@ -30,8 +30,8 @@ jobs:
         with:
           name: RCONLib
           path: build/libs/*.jar
-      - name: Publish to GitHub Packages
-        env:
-          ACTOR: "RTAkland"
-          TOKEN: ${{ secrets.GIT_TOKEN }}
-        run: ./gradlew publish
+#      - name: Publish to GitHub Packages
+#        env:
+#          ACTOR: "RTAkland"
+#          TOKEN: ${{ secrets.GIT_TOKEN }}
+#        run: ./gradlew publish

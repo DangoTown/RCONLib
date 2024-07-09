@@ -24,23 +24,19 @@ tasks.compileJava {
 }
 
 publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
+
     repositories {
         maven {
-            name = "GithubPackages"
-            url = uri("https://repo.rtast.cn/api/packages/RTAkland/maven")
+            url = uri("https://repo.rtast.cn/api/v4/projects/3/packages/maven")
             credentials {
                 username = "RTAkland"
                 password = System.getenv("TOKEN")
             }
-        }
-    }
-
-    publications {
-        create<MavenPublication>("gpr") {
-            from(components["java"])
-            groupId = "cn.rtast"
-            artifactId = "rconlib"
-            version = libVersion
         }
     }
 }
