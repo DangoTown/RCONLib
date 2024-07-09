@@ -21,13 +21,16 @@
 
 # 添加依赖
 
-```gradle
-maven { url 'https://jitpack.io' }
+```kts
+maven {
+    name = "rtast-repo"
+    url = uri("https://repo.rtast.cn/api/v4/projects/3/packages/maven")
+}
 ```
 
 ```gradle
 dependencies {
-    implementation 'com.github.DangoTown:RCONLib:$version'
+    implementation("cn.rtast.RCONLib:$version")
 }
 ```
 
