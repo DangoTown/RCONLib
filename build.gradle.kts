@@ -23,10 +23,20 @@ tasks.compileJava {
     targetCompatibility = "11"
 }
 
+tasks.register<Jar>("sourceJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
+artifacts {
+    archives(tasks.named("sourceJar"))
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
+            artifact(tasks["sourceJar"])
         }
     }
 
