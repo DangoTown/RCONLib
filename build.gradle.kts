@@ -23,29 +23,30 @@ tasks.compileJava {
     targetCompatibility = "11"
 }
 
-tasks.register<Jar>("sourceJar") {
+val sourceJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
 }
 
 artifacts {
-    archives(tasks.named("sourceJar"))
+    archives(sourceJar)
 }
 
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifact(tasks["sourceJar"])
+            artifact(sourceJar)
+            artifactId = "rconlib"
         }
     }
 
     repositories {
         maven {
-            url = uri("https://repo.rtast.cn/api/v4/projects/3/packages/maven")
+            url = uri("https://maven.pkg.github.com/DangoTown/RCONLib")
             credentials {
                 username = "RTAkland"
-                password = System.getenv("TOKEN")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
