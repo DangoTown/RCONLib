@@ -43,10 +43,10 @@ publishing {
 
     repositories {
         maven {
-            url = uri("https://maven.pkg.github.com/DangoTown/RCONLib")
+            url = uri("https://maven.rtast.cn/repository/maven-releases/")
             credentials {
-                username = "RTAkland"
-                password = System.getenv("GITHUB_TOKEN")
+                username = "admin"
+                password = System.getenv("PUBLISH_TOKEN")
             }
         }
     }
