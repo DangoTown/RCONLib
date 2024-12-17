@@ -43,9 +43,9 @@ publishing {
 
     repositories {
         maven {
-            url = uri("https://maven.rtast.cn/repository/maven-releases/")
+            url = uri("https://maven.rtast.cn/releases/")
             credentials {
-                username = "admin"
+                username = "RTAkland"
                 password = System.getenv("PUBLISH_TOKEN")
             }
         }
