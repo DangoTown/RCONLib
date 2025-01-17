@@ -24,7 +24,7 @@
 ```kts
 maven {
     name = "rtast-repo"
-    url = uri("https://maven.rtast.cn/releases/")
+    url = uri("https://repo.maven.rtast.cn/releases/")
 }
 ```
 
