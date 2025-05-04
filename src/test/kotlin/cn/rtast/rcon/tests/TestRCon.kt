@@ -17,6 +17,11 @@
 
 package cn.rtast.rcon.tests
 
+import cn.rtast.rcon.RCon
+
 fun main() {
-    println("Not testable")
+    val client = RCon("127.0.0.1", 25579)
+    client.authenticate("114514")
+    println(client.executeCommand("say 你好"))
+    println(client.executeCommand("say Hello"))
 }

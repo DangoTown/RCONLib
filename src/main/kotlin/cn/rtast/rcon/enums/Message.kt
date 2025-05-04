@@ -17,12 +17,12 @@
 package cn.rtast.rcon.enums
 
 data class Message(
-    val length: Int,
     val id: Int,
     val type: MessageType,
     val body: String
 ) {
-    override fun toString(): String {
-        return this.body
-    }
+    val length: Int
+        get() = body.toByteArray().size + 10
+
+    override fun toString(): String = body
 }
