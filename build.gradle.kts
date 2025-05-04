@@ -23,27 +23,17 @@ tasks.compileJava {
     targetCompatibility = "11"
 }
 
-val sourceJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
-}
-
-artifacts {
-    archives(sourceJar)
-}
-
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifact(sourceJar)
             artifactId = "rconlib"
         }
     }
 
     repositories {
-        maven {
-            url = uri("https://maven.rtast.cn/releases/")
+        maven("http://192.168.10.222:9098/releases") {
+            isAllowInsecureProtocol = true
             credentials {
                 username = "RTAkland"
                 password = System.getenv("PUBLISH_TOKEN")
